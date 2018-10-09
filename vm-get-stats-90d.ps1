@@ -2,7 +2,6 @@ $vcsa = vcsa_server
 $path = ~	
 Connect-VIServer $vcsa
 
-
 $vm = Get-Content $path/server_list
 $file = "$path/report.xlsx"
 
@@ -34,8 +33,10 @@ Group-Object -Property Entity | %{
         New-Object PSObject -Property $obj
     }
 
-    $chart_cpu = New-ExcelChartDefinition -ChartType line -XRange "Timestamp" -YRange "CPU_Usage_MHz","CPU_Usage_Percent" -Title "Average CPU Usage" -Width 800 -TitleBold -TitleSize 14 -XAxisTitleText "Date" -XAxisTitleBold -XAxisTitleSize 12 -YAxisTitleBold -YAxisTitleSize 12 -SeriesHeader "MHz","%" -Row 0 -Column 10
-    $chart_mem = New-ExcelChartDefinition -ChartType line -XRange "Timestamp" -YRange "Memory_Usage_KB","Memory_Usage_Percent" -Title "Average Memory Consumed - KiloBytes" -Width 800 -TitleBold -TitleSize 14 -XAxisTitleText "Date" -XAxisTitleBold -XAxisTitleSize 12 -YAxisTitleBold -YAxisTitleSize 12 -SeriesHeader "KB","%" -Row 20 -Column 10
-    $chart_net = New-ExcelChartDefinition -ChartType line -XRange "Timestamp" -YRange "Memory_Usage_KB" -Title "Average Network Usage - KBps" -Width 800 -TitleBold -TitleSize 14 -XAxisTitleText "Date" -XAxisTitleBold -XAxisTitleSize 12 -YAxisTitleText "KBps" -YAxisTitleBold -YAxisTitleSize 12 -SeriesHeader "KBps" -Row 40 -Column 10
-    $report | Export-Excel -Path "$file" -WorksheetName "$($_.Name)" -AutoNameRange -ExcelChartDefinition $chart_cpu,$chart_mem,$chart_net
+    $chart_cpu = New-ExcelChartDefinition -ChartType line -XRange "Timestamp" -YRange "CPU_Usage_MHz" -Title "Average CPU Usage - MHz" -Width 800 -TitleBold -TitleSize 14 -XAxisTitleText "Date" -XAxisTitleBold -XAxisTitleSize 12 -YAxisTitleBold -YAxisTitleSize 12 -SeriesHeader "MHz" -Row 0 -Column 10
+    $chart_cpu_per = New-ExcelChartDefinition -ChartType line -XRange "Timestamp" -YRange "CPU_Usage_Percentage" -Title "Average CPU Usage - Percentage" -Width 800 -TitleBold -TitleSize 14 -XAxisTitleText "Date" -XAxisTitleBold -XAxisTitleSize 12 -YAxisTitleBold -YAxisTitleSize 12 -SeriesHeader "%" -Row 0 -Column 24
+    $chart_mem = New-ExcelChartDefinition -ChartType line -XRange "Timestamp" -YRange "Memory_Usage_KB" -Title "Average Memory Consumed - KiloBytes" -Width 800 -TitleBold -TitleSize 14 -XAxisTitleText "Date" -XAxisTitleBold -XAxisTitleSize 12 -YAxisTitleBold -YAxisTitleSize 12 -SeriesHeader "KB" -Row 20 -Column 10
+    $chart_mem_per = New-ExcelChartDefinition -ChartType line -XRange "Timestamp" -YRange "Memory_Usage_Percent" -Title "Average Memory Consumed - Percentage" -Width 800 -TitleBold -TitleSize 14 -XAxisTitleText "Date" -XAxisTitleBold -XAxisTitleSize 12 -YAxisTitleBold -YAxisTitleSize 12 -SeriesHeader "%" -Row 20 -Column 24
+    $chart_net = New-ExcelChartDefinition -ChartType line -XRange "Timestamp" -YRange "Network_Usage_KBps" -Title "Average Network Usage - KBps" -Width 800 -TitleBold -TitleSize 14 -XAxisTitleText "Date" -XAxisTitleBold -XAxisTitleSize 12 -YAxisTitleText "KBps" -YAxisTitleBold -YAxisTitleSize 12 -SeriesHeader "KBps" -Row 40 -Column 10
+    $report | Export-Excel -Path "$file" -WorksheetName "$($_.Name)" -AutoNameRange -ExcelChartDefinition $chart_cpu,$chart_cpu_per,$chart_mem,$chart_mem_per,$chart_net
 }
