@@ -5,6 +5,6 @@ Built using Powershell and VMWare Powercli on CentOS 7
 
 Assumes:
 
-* Powershell installed via yum0
+* Powershell installed via yum
 * VMware.PowerCLI installed
-* Import.Excel powershell module installed
+* Import-Excel powershell module installed
